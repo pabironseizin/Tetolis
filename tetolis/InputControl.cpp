@@ -19,6 +19,11 @@ enum KEY_STATE
 };
 
 /***************************************
+* 変数宣言
+***************************************/
+KEY_STATE button_state[XINPUT_BUTTON_MAX];  //各ボタン入力状態
+
+/***************************************
 * プロトタイプ宣言
 ***************************************/
 
@@ -58,10 +63,146 @@ void InputControl_Update(void)
 		{
 			switch (button_state[i])
 			{
-
+			case E_NONE:
+			case E_RELEASED:
+				button_state[i] = E_CLICK;
+				break;
+			case E_CLICK:
+			case E_PRESS:
+				button_state[i] = E_PRESS;
+				break;
+			default:
+				button_state[i] = E_NONE;
+				break;
+			}
+		}
+		else
+		{
+			switch (button_state[i])
+			{
+			case E_NONE:
+			case E_RELEASED:
+				button_state[i] = E_NONE;
+				break;
+			case E_CLICK:
+			case E_PRESS:
+				button_state[i] = E_RELEASED;
+				break;
+			default:
+				button_state[i] = E_NONE;
+				break;
 			}
 		}
 	}
 
+}
 
+/***************************************
+* 入力制御機能:押されているか判定処理
+* 引数:XINPUTのボタン情報
+* XINPUT_BUTTON_DPAD_UP  (0)  //デジタル方向ボタン上
+* XINPUT_BUTTON_DPAD_DOWN  (1)  //デジタル方向ボタン下
+* XINPUT_BUTTON_DPAD_LEFT  (2)  //デジタル方向ボタン左
+* XINPUT_BUTTON_DPAD_RIGHT  (3)  //デジタル方向ボタン右
+* XINPUT_BUTTON_START  (4)  //STARTボタン
+* XINPUT_BUTTON_BACK  (5)  //BACKボタン
+* XINPUT_BUTTON_LEFT_THUMB  (6)  //左スティック押し込み
+* XINPUT_BUTTON_RIGHT_THUMB  (7)  //右スティック押し込み
+* XINPUT_BUTTON_LEFT_SHOULDER  (8)  //LBボタン
+* XINPUT_BUTTON_RIGHT_SYOULDER  (9)  //RBボタン
+* XINPUT_BUTTON_A  (12)  //Aボタン
+* XINPUT_BUTTON_B  (13)  //Bボタン
+* XINPUT_BUTTON_X  (14)  //Xボタン
+* XINPUT_BUTTON_Y  (15)  //Yボタン
+* 戻り値:TRUE（押されている）,FALSE（押されていない）
+***************************************/
+int GetButton(int button)
+{
+	int ret = FALSE;
+
+	if (button_state[button] == E_CLICK || button_state[button] == E_PRESS)
+	{
+		ret = TRUE;
+	}
+
+	return ret;
+}
+
+/***************************************
+* 入力制御機能:押した瞬間か判定処理
+* 引数:XINPUTのボタン情報
+* XINPUT_BUTTON_DPAD_UP  (0)  //デジタル方向ボタン上
+* XINPUT_BUTTON_DPAD_DOWN  (1)  //デジタル方向ボタン下
+* XINPUT_BUTTON_DPAD_LEFT  (2)  //デジタル方向ボタン左
+* XINPUT_BUTTON_DPAD_RIGHT  (3)  //デジタル方向ボタン右
+* XINPUT_BUTTON_START  (4)  //STARTボタン
+* XINPUT_BUTTON_BACK  (5)  //BACKボタン
+* XINPUT_BUTTON_LEFT_THUMB  (6)  //左スティック押し込み
+* XINPUT_BUTTON_RIGHT_THUMB  (7)  //右スティック押し込み
+* XINPUT_BUTTON_LEFT_SHOULDER  (8)  //LBボタン
+* XINPUT_BUTTON_RIGHT_SYOULDER  (9)  //RBボタン
+* XINPUT_BUTTON_A  (12)  //Aボタン
+* XINPUT_BUTTON_B  (13)  //Bボタン
+* XINPUT_BUTTON_X  (14)  //Xボタン
+* XINPUT_BUTTON_Y  (15)  //Yボタン
+* 戻り値:TRUE（押した瞬間）,FALSE（押した瞬間ではない）
+***************************************/
+int GetButtonDown(int button)
+{
+	int ret = FALSE;
+
+	if (button_state[button] == E_CLICK)
+	{
+		ret = TRUE;
+	}
+
+	return ret;
+}
+
+/***************************************
+* 入力制御機能:離したか判定処理
+* 引数:XINPUTのボタン情報
+* XINPUT_BUTTON_DPAD_UP  (0)  //デジタル方向ボタン上
+* XINPUT_BUTTON_DPAD_DOWN  (1)  //デジタル方向ボタン下
+* XINPUT_BUTTON_DPAD_LEFT  (2)  //デジタル方向ボタン左
+* XINPUT_BUTTON_DPAD_RIGHT  (3)  //デジタル方向ボタン右
+* XINPUT_BUTTON_START  (4)  //STARTボタン
+* XINPUT_BUTTON_BACK  (5)  //BACKボタン
+* XINPUT_BUTTON_LEFT_THUMB  (6)  //左スティック押し込み
+* XINPUT_BUTTON_RIGHT_THUMB  (7)  //右スティック押し込み
+* XINPUT_BUTTON_LEFT_SHOULDER  (8)  //LBボタン
+* XINPUT_BUTTON_RIGHT_SYOULDER  (9)  //RBボタン
+* XINPUT_BUTTON_A  (12)  //Aボタン
+* XINPUT_BUTTON_B  (13)  //Bボタン
+* XINPUT_BUTTON_X  (14)  //Xボタン
+* XINPUT_BUTTON_Y  (15)  //Yボタン
+* 戻り値:TRUE（押した瞬間）,FALSE（押した瞬間ではない）
+***************************************/
+int GetButtonUp(int button)
+{
+	int ret = FALSE;
+
+	if (button_state[button] == E_RELEASED)
+	{
+		ret = TRUE;
+	}
+
+	return ret;
+}
+
+/***************************************
+* 入力制御機能:ゲーム終了用のボタン判定処理
+* 引数:なし
+* 戻り値:TRUE（押した瞬間）,FALSE（押した瞬間ではない）
+***************************************/
+int GetExitButton(void)
+{
+	int ret = FALSE;
+
+	if ((GetButtonDown(XINPUT_BUTTON_BACK) == TRUE) || (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE))
+	{
+		ret = TRUE;
+	}
+
+	return ret;
 }
