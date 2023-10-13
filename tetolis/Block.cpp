@@ -127,7 +127,7 @@ int Block_Initialize(void)
 	int i = 0;
 
 	//ƒuƒƒbƒN‰æ‘œ‚Ì“Ç‚İ
-	ret = LoadDivGraph("images/block.png", E_BLOCK_IMAGE_MAX, 10.1, BLOCK_SIZE, BLOCK_SIZE, BlockImage);
+	ret = LoadDivGraph("images/block.png", E_BLOCK_IMAGE_MAX, 10,1, BLOCK_SIZE, BLOCK_SIZE, BlockImage);
 
 	//SE‚Ì“Ç‚İ‚İ
 	SoundEffect[0] = LoadSoundMem("sounds/SE3.mp3");
