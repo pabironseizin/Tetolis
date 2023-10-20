@@ -44,7 +44,7 @@ void SceneManager_Initialize(GAME_MODE mode)
 		if (game_mode == E_GAMEMAIN)
 		{
 			Set_RankingMode(RANKING_INPUT_MODE);  //ランキング入力モードで起動
-			Set_RankingScere(Get_Score());  //スコアの取得
+			Set_RankingScore(Get_Score());  //スコアの取得
 		}
 		else
 		{
@@ -117,6 +117,16 @@ void SceneManager_Draw(void)
 		EndScene_Draw();
 		break;
 	}
+}
+
+/***************************************
+* シーン管理機能：シーン変更処理
+* 引数：変更するゲームモード
+* 戻り値：なし
+***************************************/
+void Change_Scene(GAME_MODE mode)
+{
+	next_mode = mode;
 }
 
 /***************************************
