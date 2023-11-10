@@ -299,7 +299,7 @@ void create_field(void)
 		for (j = 0; j < FIELD_WIDTH; j++)
 		{
 			//フィールド値の設定
-			if (j == 0 || j == FIELD_HEIGHT - 1 || i == FIELD_WIDTH - 1)
+			if (j == 0 || j == FIELD_WIDTH - 1 || i == FIELD_HEIGHT - 1)
 			{
 				Field[i][j] = E_BLOCK_WALL;  //壁状態にする
 			}
@@ -380,7 +380,7 @@ void move_block(void)
 	}
 
 	//下入力時(ソフトドロップ処理)
-	if (GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+	if (GetButton(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		if (check_overlap(DropBlock_X, DropBlock_Y + 1) == TRUE)
 		{
@@ -477,7 +477,7 @@ void turn_block(int clockwise)
 		{
 			DropBlock_X--;
 		}
-		if (check_overlap(DropBlock_X, DropBlock_Y) && DropBlock_X >= E_BLOCK_EMPTY)
+		if (check_overlap(DropBlock_X, DropBlock_Y) && DropBlock_X <= E_BLOCK_EMPTY)
 		{
 			DropBlock_X++;
 		}
@@ -546,7 +546,7 @@ void check_line(void)
 
 	for (i = 0; i < FIELD_HEIGHT - 1; i++)
 	{
-		for (j = 0; j < FIELD_WIDTH; j++)
+		for (j = 1; j < FIELD_WIDTH; j++)
 		{
 			//行の途中が開いているか？
 			if (Field[i][j] == E_BLOCK_EMPTY)
@@ -556,7 +556,7 @@ void check_line(void)
 		}
 
 		//一列そろっていたら、カウントを増やし、1段下げる
-		if (j < FIELD_WIDTH)
+		if (j >= FIELD_WIDTH)
 		{
 			//カウントを増加
 			DeleteLine++;
@@ -566,7 +566,7 @@ void check_line(void)
 			{
 				for (j = 1; j < FIELD_WIDTH; j++)
 				{
-					Field[i][j] = Field[k - 1][j];
+					Field[k][j] = Field[k - 1][j];
 				}
 			}
 			PlaySoundMem(SoundEffect[0], DX_PLAYTYPE_BACK, TRUE);
