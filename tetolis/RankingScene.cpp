@@ -190,7 +190,7 @@ void file_write(void)
 	{
 		for (i = 0; i < RANKING_MAX; i++)
 		{
-			fscanf_s(fp, "%2d,%[^,],%10d\n", &Ranking_Date[i].rank, Ranking_Date[i].name, RANKING_NAME_LEN, &Ranking_Date[i].score);
+			fscanf_s(fp, "%2d,%s,%10d\n", &Ranking_Date[i].rank, Ranking_Date[i].name, RANKING_NAME_LEN, &Ranking_Date[i].score);
 		}
 
 		fclose(fp);
